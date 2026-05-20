@@ -1,36 +1,10 @@
 import { createContext, useState } from 'react';
+import { translations } from '../locales/translations';
 
 export const LanguageContext = createContext();
 
 export const LanguageProvider = ({ children }) => {
   const [language, setLanguage] = useState('uk');
-
-  const translations = {
-    en: {
-      homeTitle: "Home Page",
-      modeSelection: "Mode selection",
-      startChat: "Start Chat",
-      ageCategory: "Age category",
-      filters: "Filters",
-      textChat: "Text Chat",
-      voiceCall: "Voice Call",
-      videoCall: "Video Call",
-      language: "Language",
-      theme: "Theme"
-    },
-    uk: {
-      homeTitle: "Головна сторінка",
-      modeSelection: "Вибір режиму",
-      startChat: "Почати чат",
-      ageCategory: "Вікова категорія",
-      filters: "Фільтри",
-      textChat: "Текстовий чат",
-      voiceCall: "Голосовий дзвінок",
-      videoCall: "Відеодзвінок",
-      language: "Мова",
-      theme: "Тема"
-    }
-  };
 
   const t = (key) => translations[language]?.[key] || key;
 

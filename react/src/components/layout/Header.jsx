@@ -5,7 +5,7 @@ export const Header = () => {
     <header className="app-header">
       <div className="logo-section">
         <div className="logo-icon">💬</div>
-        <span className="logo-text">Anonymous</span>
+        <span className="logo-text">Anonymous Stealth Talk</span>
       </div>
       <div className="header-links">
         <a href="#">Guidelines</a>
