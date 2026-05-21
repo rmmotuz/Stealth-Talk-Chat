@@ -21,7 +21,7 @@ jobs:
           JSON_PAYLOAD=$(jq -n \
             --arg idList "$LIST_ID" \
             --arg name "$CLEAN_MSG" \
-            --arg desc "Автор: **$COMMIT_AUTHOR**\n\n[Переглянути зміни на GitHub]($COMMIT_URL)" \
+            --arg desc "Автор комміта: **$COMMIT_AUTHOR** - [Переглянути зміни на GitHub]($COMMIT_URL)" \
             '{idList: $idList, name: $name, desc: $desc}')
 
           curl --request POST \
