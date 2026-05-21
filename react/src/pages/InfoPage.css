@@ -1,0 +1,226 @@
+.info-main {
+    padding: 0;
+    overflow-y: auto;
+    flex: 1;
+}
+
+.info-hero {
+    text-align: center;
+    padding: 40px 28px 24px;
+    border-bottom: 1px solid var(--border-color);
+    background: linear-gradient(180deg, var(--accent-surface) 0%, transparent 100%);
+}
+
+.info-icon-wrap {
+    width: 56px;
+    height: 56px;
+    border-radius: var(--radius-lg);
+    background: var(--accent-gradient);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    margin-bottom: 16px;
+    box-shadow: 0 8px 24px var(--accent-primary-glow);
+}
+
+.info-title {
+    font-size: 26px;
+    font-weight: 800;
+    margin-bottom: 8px;
+    letter-spacing: -0.3px;
+}
+
+.info-subtitle {
+    font-size: 14px;
+    color: var(--text-secondary);
+    max-width: 400px;
+    margin: 0 auto;
+    line-height: 1.5;
+}
+
+.info-content {
+    padding: 24px 28px;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 14px;
+}
+
+.info-card {
+    background-color: var(--bg-element);
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-lg);
+    padding: 24px;
+    transition: all 0.3s ease;
+}
+
+.info-card:hover {
+    border-color: var(--border-color-hover);
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-md);
+}
+
+.info-card.wide {
+    grid-column: 1 / -1;
+}
+
+.info-card.accent {
+    border-color: rgba(99, 102, 241, 0.25);
+    background: linear-gradient(135deg, rgba(99, 102, 241, 0.08), rgba(139, 92, 246, 0.06));
+}
+
+.info-card.warning {
+    border-color: rgba(245, 158, 11, 0.25);
+    background: linear-gradient(135deg, rgba(245, 158, 11, 0.06), rgba(239, 68, 68, 0.04));
+}
+
+.info-card.fun {
+    border-color: rgba(34, 197, 94, 0.25);
+    background: linear-gradient(135deg, rgba(34, 197, 94, 0.06), rgba(99, 102, 241, 0.04));
+}
+
+.card-icon {
+    font-size: 28px;
+    margin-bottom: 12px;
+}
+
+.card-number {
+    font-size: 32px;
+    font-weight: 800;
+    background: var(--accent-gradient);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    margin-bottom: 8px;
+    line-height: 1;
+}
+
+.info-card h2 {
+    font-size: 16px;
+    font-weight: 700;
+    margin-bottom: 8px;
+    color: var(--text-main);
+}
+
+.info-card p {
+    font-size: 13px;
+    line-height: 1.6;
+    color: var(--text-secondary);
+}
+
+.tech-badges {
+    display: flex;
+    gap: 6px;
+    flex-wrap: wrap;
+    margin-top: 12px;
+}
+
+.tech-badge {
+    padding: 4px 12px;
+    border-radius: var(--radius-full);
+    background-color: var(--accent-surface-active);
+    color: var(--accent-text);
+    font-size: 11px;
+    font-weight: 600;
+    font-family: 'SF Mono', 'Fira Code', monospace;
+    letter-spacing: 0.3px;
+}
+
+.flow-diagram {
+    margin: 16px 0;
+    overflow-x: auto;
+}
+
+.flow-step {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    min-width: 500px;
+}
+
+.flow-node {
+    padding: 10px 16px;
+    border-radius: var(--radius-md);
+    font-size: 12px;
+    font-weight: 600;
+    text-align: center;
+    white-space: nowrap;
+}
+
+.flow-node.you, .flow-node.partner {
+    background: var(--accent-gradient);
+    color: white;
+}
+
+.flow-node.encrypt {
+    background-color: var(--accent-surface-active);
+    color: var(--accent-text);
+    border: 1px solid var(--border-color);
+}
+
+.flow-node.server {
+    background-color: var(--bg-card);
+    color: var(--text-secondary);
+    border: 1px dashed var(--border-color);
+}
+
+.flow-node.server small {
+    font-weight: 400;
+    opacity: 0.7;
+}
+
+.flow-arrow {
+    color: var(--text-secondary);
+    font-size: 18px;
+    flex-shrink: 0;
+}
+
+.flow-note {
+    text-align: center;
+    margin-top: 8px;
+}
+
+.warn-list {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    margin-top: 12px;
+}
+
+.warn-item {
+    font-size: 12px;
+    color: var(--text-secondary);
+    padding: 4px 0;
+}
+
+.fun-emojis {
+    display: flex;
+    gap: 10px;
+    margin-top: 12px;
+    font-size: 24px;
+}
+
+.info-footer-text {
+    text-align: center;
+    padding: 20px 28px 28px;
+    border-top: 1px solid var(--border-color);
+}
+
+.info-footer-text p {
+    font-size: 12px;
+    color: var(--text-secondary);
+    line-height: 1.5;
+}
+
+@media (max-width: 640px) {
+    .info-content {
+        grid-template-columns: 1fr;
+    }
+
+    .flow-step {
+        min-width: auto;
+        flex-wrap: wrap;
+        justify-content: center;
+    }
+}
