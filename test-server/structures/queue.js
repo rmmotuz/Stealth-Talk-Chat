@@ -1,4 +1,4 @@
-export class Queue {
+class Queue {
   constructor() {
     this.items = {};
     this.head = 0;
@@ -36,4 +36,36 @@ export class Queue {
     this.head = 0;
     this.tail = 0;
   }
+
+  remove(predicate) {
+    for (let i = this.head; i < this.tail; i++) {
+      if (this.items[i] && predicate(this.items[i])) {
+        delete this.items[i];
+        return true;
+      }
+    }
+    return false;
+  }
+
+  find(predicate) {
+    for (let i = this.head; i < this.tail; i++) {
+      if (this.items[i] && predicate(this.items[i])) {
+        return { index: i, item: this.items[i] };
+      }
+    }
+    return null;
+  }
+
+  extractBy(predicate) {
+    for (let i = this.head; i < this.tail; i++) {
+      if (this.items[i] && predicate(this.items[i])) {
+        const item = this.items[i];
+        delete this.items[i];
+        return item;
+      }
+    }
+    return null;
+  }
 }
+
+module.exports = { Queue };
