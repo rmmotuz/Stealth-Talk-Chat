@@ -209,8 +209,8 @@ io.on("connection", (socket) => {
     socket.to(roomId).emit("webrtc_ice_candidate", { candidate, from: socket.id });
   });
 
-  socket.on("voice_state", ({ roomId, isActive }) => {
-    socket.to(roomId).emit("voice_state", { isActive, from: socket.id });
+  socket.on("media_state", ({ roomId, audioActive, videoActive }) => {
+    socket.to(roomId).emit("media_state", { audioActive, videoActive, from: socket.id });
   });
 
   socket.on("skip_partner", (preferences) => {

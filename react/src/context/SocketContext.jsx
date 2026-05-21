@@ -171,6 +171,7 @@ export const SocketProvider = ({ children }) => {
   const findPartner = useCallback((preferences) => {
     preferencesRef.current = preferences;
     setChatMode(preferences.mode);
+    setStatus("searching");
     sharedKeyRef.current = null;
     keyPairRef.current = null;
     socket.emit("find_partner", preferences);
