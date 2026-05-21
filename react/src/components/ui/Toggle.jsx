@@ -6,17 +6,17 @@ export const Toggle = () => {
 
   return (
     <div className="toggle-container">
-      <button 
-        className={`toggle-btn ${theme === 'light' ? 'active' : ''}`} 
+      <button
+        className={`toggle-btn ${theme === 'light' ? 'active' : ''}`}
         onClick={setLightMode}
       >
-        Light Mode
+        ☀️
       </button>
-      <button 
-        className={`toggle-btn ${theme === 'dark' ? 'active' : ''}`} 
+      <button
+        className={`toggle-btn ${theme === 'dark' ? 'active' : ''}`}
         onClick={setDarkMode}
       >
-        Dark Mode
+        🌙
       </button>
     </div>
   );

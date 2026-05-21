@@ -1,23 +1,25 @@
 .toggle-container {
     display: flex;
     background-color: var(--bg-element);
-    border-radius: 20px;
-    padding: 4px;
+    border-radius: var(--radius-full);
+    padding: 3px;
     border: 1px solid var(--border-color);
+    gap: 2px;
 }
 
 .toggle-btn {
-    padding: 6px 16px;
+    padding: 6px 14px;
     border: none;
     background: transparent;
-    border-radius: 16px;
-    font-size: 12px;
+    border-radius: var(--radius-full);
+    font-size: 14px;
     color: var(--text-secondary);
     cursor: pointer;
+    transition: all 0.25s ease;
+    line-height: 1;
 }
 
 .toggle-btn.active {
-    background-color: var(--bg-card);
-    color: var(--text-main);
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    background: var(--accent-gradient);
+    box-shadow: 0 2px 8px var(--accent-primary-glow);
 }

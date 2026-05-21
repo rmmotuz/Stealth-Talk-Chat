@@ -1,16 +1,26 @@
 .tag {
-    padding: 8px 16px;
-    border-radius: 20px;
+    padding: 8px 18px;
+    border-radius: var(--radius-full);
     border: 1px solid var(--border-color);
     background-color: var(--bg-element);
     color: var(--text-secondary);
     cursor: pointer;
     font-size: 13px;
-    transition: all 0.2s ease;
+    font-family: 'Inter', sans-serif;
+    font-weight: 500;
+    transition: all 0.25s ease;
+    user-select: none;
+}
+
+.tag:hover {
+    border-color: var(--border-color-hover);
+    color: var(--text-main);
+    transform: translateY(-1px);
 }
 
 .tag.active {
-    background-color: var(--accent-blue);
-    color: var(--accent-text);
-    border-color: var(--accent-blue-active);
+    background: var(--accent-gradient);
+    color: white;
+    border-color: transparent;
+    box-shadow: 0 3px 10px var(--accent-primary-glow);
 }
