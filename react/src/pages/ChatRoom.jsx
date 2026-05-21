@@ -12,7 +12,7 @@ export const ChatRoom = () => {
     messages,
     sendMessage,
     partnerTyping,
-    setTyping,
+    sendTypingStatus,
     skipPartner,
     leaveChat,
     chatMode,
@@ -47,9 +47,9 @@ export const ChatRoom = () => {
   useEffect(() => {
     if (status === "matched" && !mediaActive) {
       if (chatMode === "videoCall") {
-        startMedia(true); // withVideo = true
+        startMedia(true);
       } else if (chatMode === "voiceCall") {
-        startMedia(false); // withVideo = false
+        startMedia(false);
       }
     }
   }, [status, chatMode, mediaActive, startMedia]);
@@ -59,14 +59,14 @@ export const ChatRoom = () => {
     if (inputMessage.trim() && status === "matched") {
       sendMessage(inputMessage);
       setInputMessage("");
-      setTyping(false);
+      sendTypingStatus(false);
     }
   };
 
   const handleTyping = (e) => {
     setInputMessage(e.target.value);
     if (status === "matched") {
-      setTyping(e.target.value.length > 0);
+      sendTypingStatus(e.target.value.length > 0);
     }
   };
 
@@ -79,7 +79,6 @@ export const ChatRoom = () => {
 
   return (
     <div className={`app-container chat-container ${isMediaMode ? 'has-media' : ''}`}>
-      {}
       <header className="chat-header-bar">
         <div className="chat-header-left">
           <div className="partner-avatar">
@@ -115,16 +114,14 @@ export const ChatRoom = () => {
       </header>
 
       <div className="chat-content-wrapper">
-        {}
         {isMediaMode && (
           <section className="media-section">
             {chatMode === "videoCall" ? (
               <div className="video-container">
-                {}
-                <video 
-                  ref={remoteMediaRef} 
-                  autoPlay 
-                  playsInline 
+                <video
+                  ref={remoteMediaRef}
+                  autoPlay
+                  playsInline
                   className={`remote-video ${partnerCameraActive ? 'active' : ''}`}
                 />
                 {!partnerCameraActive && (
@@ -133,14 +130,13 @@ export const ChatRoom = () => {
                     <span className="placeholder-text">{t("cameraOff")}</span>
                   </div>
                 )}
-                
-                {}
+
                 <div className="local-video-pip">
-                  <video 
-                    ref={localMediaRef} 
-                    autoPlay 
-                    playsInline 
-                    muted 
+                  <video
+                    ref={localMediaRef}
+                    autoPlay
+                    playsInline
+                    muted
                     className={`local-video ${!isCameraOff ? 'active' : ''}`}
                   />
                   {isCameraOff && (
@@ -152,6 +148,7 @@ export const ChatRoom = () => {
               </div>
             ) : (
               <div className="voice-container">
+                <audio ref={remoteMediaRef} autoPlay />
                 <div className={`voice-avatar ${partnerVoiceActive ? 'speaking' : ''}`}>
                   👤
                   {partnerVoiceActive && (
@@ -176,10 +173,9 @@ export const ChatRoom = () => {
               </div>
             )}
 
-            {}
             <div className="media-controls">
-              <button 
-                className={`media-btn ${isMuted ? 'muted' : ''}`} 
+              <button
+                className={`media-btn ${isMuted ? 'muted' : ''}`}
                 onClick={toggleMute}
                 title={isMuted ? t("unmute") : t("mute")}
               >
@@ -200,10 +196,10 @@ export const ChatRoom = () => {
                   </svg>
                 )}
               </button>
-              
+
               {chatMode === "videoCall" && (
-                <button 
-                  className={`media-btn ${isCameraOff ? 'muted' : ''}`} 
+                <button
+                  className={`media-btn ${isCameraOff ? 'muted' : ''}`}
                   onClick={toggleCamera}
                   title={isCameraOff ? t("cameraOn") : t("cameraOff")}
                 >
@@ -226,7 +222,6 @@ export const ChatRoom = () => {
           </section>
         )}
 
-        {}
         <section className="text-chat-section">
           <div className="messages-area">
             <div className="system-message">

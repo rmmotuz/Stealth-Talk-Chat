@@ -29,7 +29,6 @@ export const SearchingPage = () => {
       <Header />
       <main className="searching-main">
         <div className="searching-content">
-          {}
           <div className="radar-container">
             <div className="radar-pulse pulse-1"></div>
             <div className="radar-pulse pulse-2"></div>
@@ -44,14 +43,12 @@ export const SearchingPage = () => {
           <h2 className="searching-title">{t("searchingTitle")}</h2>
           <p className="searching-subtitle">{t("searchingSubtitle")}</p>
 
-          {}
           <div className="dots-container">
             <span className="search-dot dot-1"></span>
             <span className="search-dot dot-2"></span>
             <span className="search-dot dot-3"></span>
           </div>
 
-          {}
           <div className="encryption-badge">
             <span className="lock-icon">🔒</span>
             <span>{t("encryptionActive")}</span>

@@ -15,7 +15,7 @@ export const SocketContext = createContext();
 export const SocketProvider = ({ children }) => {
 
   const [isConnected, setIsConnected] = useState(false);
-  const [status, setStatus] = useState("idle"); // idle | searching | matched | disconnected
+  const [status, setStatus] = useState("idle");
   const [roomId, setRoomId] = useState(null);
   const [partnerId, setPartnerId] = useState(null);
   const [messages, setMessages] = useState([]);
@@ -31,7 +31,7 @@ export const SocketProvider = ({ children }) => {
   const [partnerVoiceActive, setPartnerVoiceActive] = useState(false);
   const [partnerCameraActive, setPartnerCameraActive] = useState(false);
   const [mediaConnectionState, setMediaConnectionState] = useState("new");
-  
+
   const mediaControllerRef = useRef(null);
   const localMediaRef = useRef(null);
   const remoteMediaRef = useRef(null);
@@ -87,7 +87,6 @@ export const SocketProvider = ({ children }) => {
             keyPairRef.current.privateKey,
             partnerPublicKey
           );
-          console.log("🔐 Shared encryption key derived");
         }
       } catch (err) {
         console.error("Key exchange failed:", err);
@@ -191,7 +190,6 @@ export const SocketProvider = ({ children }) => {
         const { encryptedData, iv } = await encryptMessage(text, sharedKeyRef.current);
         payload = { roomId, encryptedData, iv };
       } else {
-
         const encoder = new TextEncoder();
         const data = encoder.encode(text);
         const base64 = btoa(String.fromCharCode(...data));
@@ -293,7 +291,7 @@ export const SocketProvider = ({ children }) => {
     setMediaActive(false);
     setIsMuted(false);
     setIsCameraOff(false);
-    
+
     if (localMediaRef.current) localMediaRef.current.srcObject = null;
     if (remoteMediaRef.current) remoteMediaRef.current.srcObject = null;
 
@@ -319,7 +317,6 @@ export const SocketProvider = ({ children }) => {
   }, [roomId]);
 
   const value = {
-
     isConnected,
     status,
     roomId,

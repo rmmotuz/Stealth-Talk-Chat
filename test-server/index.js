@@ -14,11 +14,8 @@ const io = new Server(server, {
 });
 
 const matchQueue = new Queue();
-
 const activeRooms = new Map();
-
 const socketRoomMap = new Map();
-
 const waitingUsers = new Map();
 
 function generateRoomId() {
@@ -26,7 +23,6 @@ function generateRoomId() {
 }
 
 function calculateCompatibility(prefsA, prefsB) {
-
   if (prefsA.mode !== prefsB.mode) return -1;
 
   if (prefsA.partnerGender && prefsA.partnerGender !== "any") {
@@ -36,7 +32,7 @@ function calculateCompatibility(prefsA, prefsB) {
     if (prefsA.myGender && prefsA.myGender !== prefsB.partnerGender) return -1;
   }
 
-  let score = 1; // base compatibility
+  let score = 1;
 
   if (prefsA.age && prefsB.age && prefsA.age === prefsB.age) {
     score += 3;
@@ -81,7 +77,6 @@ function findMatch(socketId, preferences) {
   }
 
   if (bestMatch) {
-
     delete matchQueue.items[bestMatch.index];
     return bestMatch.socketId;
   }
@@ -90,7 +85,6 @@ function findMatch(socketId, preferences) {
 }
 
 function cleanupUser(socketId) {
-
   matchQueue.remove((id) => id === socketId);
   waitingUsers.delete(socketId);
 
@@ -113,8 +107,10 @@ function cleanupUser(socketId) {
   }
 }
 
-server.listen(3000, () => {
-  console.log("🚀 Stealth Talk server running on port 3000");
+const PORT = process.env.PORT || 3000;
+
+server.listen(PORT, () => {
+  console.log(`Stealth Talk server running on port ${PORT}`);
 });
 
 app.get("/", (req, res) => {
@@ -122,13 +118,13 @@ app.get("/", (req, res) => {
 });
 
 io.on("connection", (socket) => {
-  console.log(`✅ Connected: ${socket.id}`);
+  console.log(`Connected: ${socket.id}`);
 
   io.emit("online_count", io.engine.clientsCount);
 
   socket.on("find_partner", (preferences) => {
     console.log(
-      `🔍 ${socket.id} searching (mode: ${preferences.mode}, gender: ${preferences.myGender}→${preferences.partnerGender}, age: ${preferences.age}, mood: ${preferences.mood}, tags: [${preferences.tags}])`
+      `${socket.id} searching (mode: ${preferences.mode}, gender: ${preferences.myGender}->${preferences.partnerGender}, age: ${preferences.age}, mood: ${preferences.mood}, tags: [${preferences.tags}])`
     );
 
     cleanupUser(socket.id);
@@ -136,7 +132,6 @@ io.on("connection", (socket) => {
     const partnerId = findMatch(socket.id, preferences);
 
     if (partnerId) {
-
       const roomId = generateRoomId();
 
       activeRooms.set(roomId, {
@@ -156,29 +151,28 @@ io.on("connection", (socket) => {
 
       waitingUsers.delete(partnerId);
 
-      console.log(`🤝 Matched: ${socket.id} <-> ${partnerId} in ${roomId}`);
+      console.log(`Matched: ${socket.id} <-> ${partnerId} in ${roomId}`);
 
       socket.emit("match_found", { roomId, partnerId });
       if (partnerSocket) {
         partnerSocket.emit("match_found", { roomId, partnerId: socket.id });
       }
     } else {
-
       waitingUsers.set(socket.id, preferences);
       matchQueue.enqueue(socket.id);
       socket.emit("searching");
-      console.log(`⏳ ${socket.id} added to queue (size: ${matchQueue.size()})`);
+      console.log(`${socket.id} added to queue (size: ${matchQueue.size()})`);
     }
   });
 
   socket.on("cancel_search", () => {
     matchQueue.remove((id) => id === socket.id);
     waitingUsers.delete(socket.id);
-    console.log(`❌ ${socket.id} cancelled search`);
+    console.log(`${socket.id} cancelled search`);
   });
 
   socket.on("leave_chat", () => {
-    console.log(`👋 ${socket.id} left the chat`);
+    console.log(`${socket.id} left the chat`);
     cleanupUser(socket.id);
   });
 
@@ -200,7 +194,7 @@ io.on("connection", (socket) => {
       publicKey,
       from: socket.id,
     });
-    console.log(`🔑 Key exchanged in room ${roomId} by ${socket.id}`);
+    console.log(`Key exchanged in room ${roomId} by ${socket.id}`);
   });
 
   socket.on("webrtc_offer", ({ roomId, offer }) => {
@@ -220,7 +214,7 @@ io.on("connection", (socket) => {
   });
 
   socket.on("skip_partner", (preferences) => {
-    console.log(`⏭️ ${socket.id} skipping partner`);
+    console.log(`${socket.id} skipping partner`);
     cleanupUser(socket.id);
 
     socket.emit("searching");
@@ -258,7 +252,7 @@ io.on("connection", (socket) => {
   });
 
   socket.on("disconnect", () => {
-    console.log(`🔌 Disconnected: ${socket.id}`);
+    console.log(`Disconnected: ${socket.id}`);
     cleanupUser(socket.id);
 
     io.emit("online_count", io.engine.clientsCount);

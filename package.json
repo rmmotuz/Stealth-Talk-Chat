@@ -7,7 +7,8 @@
   "type": "commonjs",
   "main": "index.js",
   "scripts": {
-    "start": "npx nodemon test-server/index.js"
+    "start": "node test-server/index.js",
+    "dev": "npx nodemon test-server/index.js"
   },
   "dependencies": {
     "express": "^5.2.1",

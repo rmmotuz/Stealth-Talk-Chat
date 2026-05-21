@@ -17,10 +17,9 @@ export function createMediaConnection(
   let localStream = null;
 
   const controller = {
-    
+
     async start(isInitiator = false) {
       try {
-
         localStream = await navigator.mediaDevices.getUserMedia({
           audio: mediaOptions.audio ? {
             echoCancellation: true,
@@ -107,7 +106,7 @@ export function createMediaConnection(
         const audioTrack = localStream.getAudioTracks()[0];
         if (audioTrack) {
           audioTrack.enabled = !audioTrack.enabled;
-          return audioTrack.enabled; // Returns true if unmuted, false if muted
+          return audioTrack.enabled;
         }
       }
       return false;
@@ -118,7 +117,7 @@ export function createMediaConnection(
         const videoTrack = localStream.getVideoTracks()[0];
         if (videoTrack) {
           videoTrack.enabled = !videoTrack.enabled;
-          return videoTrack.enabled; // Returns true if camera is on, false if off
+          return videoTrack.enabled;
         }
       }
       return false;

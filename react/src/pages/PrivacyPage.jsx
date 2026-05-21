@@ -22,14 +22,12 @@ export const PrivacyPage = () => {
         </div>
 
         <div className="info-content">
-          {}
           <section className="info-card">
             <div className="card-icon">🕵️</div>
             <h2>{t("privacyZeroTitle")}</h2>
             <p>{t("privacyZeroText")}</p>
           </section>
 
-          {}
           <section className="info-card accent">
             <div className="card-icon">🔐</div>
             <h2>{t("privacyE2ETitle")}</h2>
@@ -41,21 +39,18 @@ export const PrivacyPage = () => {
             </div>
           </section>
 
-          {}
           <section className="info-card">
             <div className="card-icon">🗑️</div>
             <h2>{t("privacyNoLogsTitle")}</h2>
             <p>{t("privacyNoLogsText")}</p>
           </section>
 
-          {}
           <section className="info-card">
             <div className="card-icon">👻</div>
             <h2>{t("privacyNoRegTitle")}</h2>
             <p>{t("privacyNoRegText")}</p>
           </section>
 
-          {}
           <section className="info-card wide">
             <div className="card-icon">📡</div>
             <h2>{t("privacyDataFlowTitle")}</h2>
@@ -75,14 +70,12 @@ export const PrivacyPage = () => {
             <p className="flow-note">{t("privacyDataFlowText")}</p>
           </section>
 
-          {}
           <section className="info-card">
             <div className="card-icon">🎙️</div>
             <h2>{t("privacyVoiceTitle")}</h2>
             <p>{t("privacyVoiceText")}</p>
           </section>
 
-          {}
           <section className="info-card">
             <div className="card-icon">🍪</div>
             <h2>{t("privacyCookiesTitle")}</h2>

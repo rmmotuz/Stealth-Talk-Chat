@@ -25,14 +25,12 @@ export const GuidelinesPage = () => {
         </div>
 
         <div className="info-content">
-          {}
           <section className="info-card">
             <div className="card-number">01</div>
             <h2>{t("guideRespectTitle")}</h2>
             <p>{t("guideRespectText")}</p>
           </section>
 
-          {}
           <section className="info-card warning">
             <div className="card-number">02</div>
             <h2>{t("guidePersonalTitle")}</h2>
@@ -45,28 +43,24 @@ export const GuidelinesPage = () => {
             </div>
           </section>
 
-          {}
           <section className="info-card">
             <div className="card-number">03</div>
             <h2>{t("guideNSFWTitle")}</h2>
             <p>{t("guideNSFWText")}</p>
           </section>
 
-          {}
           <section className="info-card accent">
             <div className="card-number">04</div>
             <h2>{t("guideHarassTitle")}</h2>
             <p>{t("guideHarassText")}</p>
           </section>
 
-          {}
           <section className="info-card">
             <div className="card-number">05</div>
             <h2>{t("guideSkipTitle")}</h2>
             <p>{t("guideSkipText")}</p>
           </section>
 
-          {}
           <section className="info-card fun">
             <div className="card-number">06</div>
             <h2>{t("guideFunTitle")}</h2>

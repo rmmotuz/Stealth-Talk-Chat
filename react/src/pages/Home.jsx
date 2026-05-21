@@ -69,7 +69,6 @@ export const Home = () => {
       <Header />
 
       <main className="home-main">
-        {}
         <div className="hero-section">
           <h1 className="page-title">{t("homeTitle")}</h1>
           <p className="page-subtitle">{t("homeSubtitle")}</p>
@@ -87,7 +86,6 @@ export const Home = () => {
           </div>
         </div>
 
-        {}
         <section className="config-section">
           <p className="config-label">{t("modeSelection")}</p>
           <div className="chip-row">
@@ -99,7 +97,6 @@ export const Home = () => {
           </div>
         </section>
 
-        {}
         <section className="config-section">
           <p className="config-label">{t("moodLabel")}</p>
           <div className="chip-row">
@@ -111,21 +108,18 @@ export const Home = () => {
           </div>
         </section>
 
-        {}
         <div className="start-wrapper">
           <Button variant="large" onClick={handleStartChat} disabled={!isConnected}>
             {t("startChat")}
           </Button>
         </div>
 
-        {}
         <div className="filters-card">
           <div className="filters-header">
             <h3 className="filters-title">{t("filters")}</h3>
             <span className="filters-badge">{t("optional")}</span>
           </div>
 
-          {}
           <div className="filter-block">
             <p className="config-label">{t("yourGender")}</p>
             <div className="chip-row">
@@ -148,7 +142,6 @@ export const Home = () => {
             </div>
           </div>
 
-          {}
           <div className="filter-block">
             <p className="config-label">{t("ageCategory")}</p>
             <div className="chip-row">
@@ -160,7 +153,6 @@ export const Home = () => {
             </div>
           </div>
 
-          {}
           <div className="filter-block">
             <p className="config-label">{t("interestTags")}</p>
             <div className="tag-grid">
@@ -176,7 +168,6 @@ export const Home = () => {
           </div>
         </div>
 
-        {}
         <div className="settings-row">
           <div className="setting-item">
             <label className="config-label">{t("language")}</label>
