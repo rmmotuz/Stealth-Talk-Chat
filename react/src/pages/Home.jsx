@@ -21,6 +21,7 @@ export const Home = () => {
   const [partnerGender, setPartnerGender] = useState("any");
   const [mood, setMood] = useState("chill");
   const [selectedTags, setSelectedTags] = useState([]);
+  const [isStarting, setIsStarting] = useState(false);
 
   useEffect(() => {
     if (status === "searching") {
@@ -28,7 +29,11 @@ export const Home = () => {
     } else if (status === "matched") {
       navigate("/chat");
     }
-  }, [status, navigate]);
+    // Reset isStarting when status changes from idle to searching
+    if (status !== "idle" && isStarting) {
+      setIsStarting(false);
+    }
+  }, [status, navigate, isStarting]);
 
   const modes = [
     { key: "textChat", icon: "💬" },
@@ -68,7 +73,8 @@ export const Home = () => {
   };
 
   const handleStartChat = () => {
-    if (status !== "idle") return;
+    if (status !== "idle" || isStarting) return;
+    setIsStarting(true);
     findPartner({ mode, age, tags: selectedTags, myGender, partnerGender, mood });
   };
 

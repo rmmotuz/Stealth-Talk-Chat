@@ -122,7 +122,7 @@ export const ChatRoom = () => {
                   ref={remoteMediaRef}
                   autoPlay
                   playsInline
-                  className={`remote-video ${partnerCameraActive ? 'active' : ''}`}
+                  className="remote-video active"
                 />
                 {!partnerCameraActive && (
                   <div className="video-placeholder remote-placeholder">
