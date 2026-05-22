@@ -1,4 +1,4 @@
-import { createContext, useState, useEffect, useCallback, useRef } from "react";
+import { createContext, useState, useEffect, useCallback, useRef, useMemo } from "react";
 import socket from "../services/socket";
 import {
   generateKeyPair,
@@ -35,6 +35,7 @@ export const SocketProvider = ({ children }) => {
   const mediaControllerRef = useRef(null);
   const localMediaRef = useRef(null);
   const remoteMediaRef = useRef(null);
+  const isInitiatorRef = useRef(false);
 
   const preferencesRef = useRef(null);
   const [chatMode, setChatMode] = useState("textChat");
@@ -59,9 +60,10 @@ export const SocketProvider = ({ children }) => {
       setStatus("searching");
     });
 
-    socket.on("match_found", async ({ roomId: newRoomId, partnerId: newPartnerId }) => {
+    socket.on("match_found", async ({ roomId: newRoomId, partnerId: newPartnerId, isInitiator }) => {
       setRoomId(newRoomId);
       setPartnerId(newPartnerId);
+      isInitiatorRef.current = isInitiator;
       setMessages([]);
       setStatus("matched");
       setPartnerTyping(false);
@@ -272,7 +274,7 @@ export const SocketProvider = ({ children }) => {
     );
 
     mediaControllerRef.current = controller;
-    const success = await controller.start(true);
+    const success = await controller.start(isInitiatorRef.current);
 
     if (success) {
       setMediaActive(true);
@@ -317,7 +319,7 @@ export const SocketProvider = ({ children }) => {
     }
   }, [roomId]);
 
-  const value = {
+  const value = useMemo(() => ({
     isConnected,
     status,
     roomId,
@@ -347,7 +349,14 @@ export const SocketProvider = ({ children }) => {
     toggleCamera,
     localMediaRef,
     remoteMediaRef,
-  };
+  }), [
+    isConnected, status, roomId, partnerId, chatMode, onlineCount,
+    messages, partnerTyping, sendMessage, sendTypingStatus,
+    findPartner, cancelSearch, skipPartner, leaveChat,
+    mediaActive, isMuted, isCameraOff, partnerVoiceActive,
+    partnerCameraActive, mediaConnectionState, startMedia,
+    stopMedia, toggleMute, toggleCamera
+  ]);
 
   return (
     <SocketContext.Provider value={value}>

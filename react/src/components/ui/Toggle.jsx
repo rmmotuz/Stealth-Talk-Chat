@@ -1,7 +1,8 @@
+import { memo } from 'react';
 import { useTheme } from '../../hooks/useTheme';
 import './Toggle.css';
 
-export const Toggle = () => {
+export const Toggle = memo(() => {
   const { theme, setLightMode, setDarkMode } = useTheme();
 
   return (
@@ -20,4 +21,4 @@ export const Toggle = () => {
       </button>
     </div>
   );
-};
+});

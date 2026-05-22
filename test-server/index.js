@@ -153,9 +153,9 @@ io.on("connection", (socket) => {
 
       console.log(`Matched: ${socket.id} <-> ${partnerId} in ${roomId}`);
 
-      socket.emit("match_found", { roomId, partnerId });
+      socket.emit("match_found", { roomId, partnerId, isInitiator: true });
       if (partnerSocket) {
-        partnerSocket.emit("match_found", { roomId, partnerId: socket.id });
+        partnerSocket.emit("match_found", { roomId, partnerId: socket.id, isInitiator: false });
       }
     } else {
       waitingUsers.set(socket.id, preferences);
@@ -241,9 +241,9 @@ io.on("connection", (socket) => {
 
       waitingUsers.delete(partnerId);
 
-      socket.emit("match_found", { roomId, partnerId });
+      socket.emit("match_found", { roomId, partnerId, isInitiator: true });
       if (partnerSocket) {
-        partnerSocket.emit("match_found", { roomId, partnerId: socket.id });
+        partnerSocket.emit("match_found", { roomId, partnerId: socket.id, isInitiator: false });
       }
     } else {
       waitingUsers.set(socket.id, preferences);

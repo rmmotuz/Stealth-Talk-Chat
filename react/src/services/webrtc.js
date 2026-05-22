@@ -14,65 +14,72 @@ export function createMediaConnection(
   onConnectionStateChange
 ) {
   let peerConnection = null;
+  let startPromise = null;
   let localStream = null;
 
   const controller = {
 
     async start(isInitiator = false) {
-      try {
-        localStream = await navigator.mediaDevices.getUserMedia({
-          audio: mediaOptions.audio ? {
-            echoCancellation: true,
-            noiseSuppression: true,
-            autoGainControl: true,
-          } : false,
-          video: mediaOptions.video ? {
-            width: { ideal: 1280 },
-            height: { ideal: 720 },
-            facingMode: "user"
-          } : false,
-        });
+      if (startPromise) return startPromise;
 
-        if (onLocalStream) {
-          onLocalStream(localStream);
-        }
+      startPromise = (async () => {
+        try {
+          localStream = await navigator.mediaDevices.getUserMedia({
+            audio: mediaOptions.audio ? {
+              echoCancellation: true,
+              noiseSuppression: true,
+              autoGainControl: true,
+            } : false,
+            video: mediaOptions.video ? {
+              width: { ideal: 1280 },
+              height: { ideal: 720 },
+              facingMode: "user"
+            } : false,
+          });
 
-        peerConnection = new RTCPeerConnection(ICE_SERVERS);
-
-        localStream.getTracks().forEach((track) => {
-          peerConnection.addTrack(track, localStream);
-        });
-
-        peerConnection.ontrack = (event) => {
-          if (event.streams && event.streams[0]) {
-            onRemoteStream(event.streams[0]);
+          if (onLocalStream) {
+            onLocalStream(localStream);
           }
-        };
 
-        peerConnection.onicecandidate = (event) => {
-          if (event.candidate) {
-            socket.emit("webrtc_ice_candidate", {
-              roomId,
-              candidate: event.candidate,
-            });
+          peerConnection = new RTCPeerConnection(ICE_SERVERS);
+
+          localStream.getTracks().forEach((track) => {
+            peerConnection.addTrack(track, localStream);
+          });
+
+          peerConnection.ontrack = (event) => {
+            if (event.streams && event.streams[0]) {
+              onRemoteStream(event.streams[0]);
+            }
+          };
+
+          peerConnection.onicecandidate = (event) => {
+            if (event.candidate) {
+              socket.emit("webrtc_ice_candidate", {
+                roomId,
+                candidate: event.candidate,
+              });
+            }
+          };
+
+          peerConnection.onconnectionstatechange = () => {
+            onConnectionStateChange(peerConnection.connectionState);
+          };
+
+          if (isInitiator) {
+            const offer = await peerConnection.createOffer();
+            await peerConnection.setLocalDescription(offer);
+            socket.emit("webrtc_offer", { roomId, offer });
           }
-        };
 
-        peerConnection.onconnectionstatechange = () => {
-          onConnectionStateChange(peerConnection.connectionState);
-        };
-
-        if (isInitiator) {
-          const offer = await peerConnection.createOffer();
-          await peerConnection.setLocalDescription(offer);
-          socket.emit("webrtc_offer", { roomId, offer });
+          return true;
+        } catch (error) {
+          console.error("Failed to start media:", error);
+          return false;
         }
+      })();
 
-        return true;
-      } catch (error) {
-        console.error("Failed to start media:", error);
-        return false;
-      }
+      return startPromise;
     },
 
     async handleOffer(offer) {
@@ -132,6 +139,7 @@ export function createMediaConnection(
         peerConnection.close();
         peerConnection = null;
       }
+      startPromise = null;
     },
 
     getPeerConnection() {
