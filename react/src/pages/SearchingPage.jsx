@@ -14,9 +14,6 @@ export const SearchingPage = () => {
     if (status === "matched") {
       navigate("/chat");
     }
-    if (status === "idle") {
-      navigate("/");
-    }
   }, [status, navigate]);
 
   const handleCancel = () => {

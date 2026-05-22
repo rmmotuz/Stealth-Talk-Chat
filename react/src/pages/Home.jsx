@@ -12,7 +12,7 @@ import "./Home.css";
 export const Home = () => {
   const { t, language, setLanguage } = useContext(LanguageContext);
   const { theme } = useContext(ThemeContext);
-  const { findPartner, isConnected, onlineCount } = useContext(SocketContext);
+  const { findPartner, isConnected, onlineCount, status } = useContext(SocketContext);
   const navigate = useNavigate();
 
   const [mode, setMode] = useState("textChat");
@@ -60,6 +60,7 @@ export const Home = () => {
   };
 
   const handleStartChat = () => {
+    if (status !== "idle") return;
     findPartner({ mode, age, tags: selectedTags, myGender, partnerGender, mood });
     navigate("/searching");
   };
@@ -109,7 +110,7 @@ export const Home = () => {
         </section>
 
         <div className="start-wrapper">
-          <Button variant="large" onClick={handleStartChat} disabled={!isConnected}>
+          <Button variant="large" onClick={handleStartChat} disabled={!isConnected || status !== "idle"}>
             {t("startChat")}
           </Button>
         </div>
