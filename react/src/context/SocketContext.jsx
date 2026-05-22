@@ -14,7 +14,7 @@ export const SocketContext = createContext();
 
 export const SocketProvider = ({ children }) => {
 
-  const [isConnected, setIsConnected] = useState(false);
+  const [isConnected, setIsConnected] = useState(socket.connected);
   const [status, setStatus] = useState("idle");
   const [roomId, setRoomId] = useState(null);
   const [partnerId, setPartnerId] = useState(null);
@@ -45,25 +45,19 @@ export const SocketProvider = ({ children }) => {
       socket.connect();
     }
 
-    socket.on("connect", () => setIsConnected(true));
-    socket.on("disconnect", () => {
+    const onConnect = () => setIsConnected(true);
+    const onDisconnect = () => {
       setIsConnected(false);
-      setStatus("disconnected");
       setOnlineCount(0);
-    });
+    };
 
-    socket.on("online_count", (count) => {
-      setOnlineCount(count);
-    });
+    const onOnlineCount = (count) => setOnlineCount(count);
+    const onSearching = () => setStatus("searching");
 
-    socket.on("searching", () => {
-      setStatus("searching");
-    });
-
-    socket.on("match_found", async ({ roomId: newRoomId, partnerId: newPartnerId, isInitiator }) => {
+    const onMatchFound = async ({ roomId: newRoomId, partnerId: newPartnerId, isInitiator }) => {
       setRoomId(newRoomId);
       setPartnerId(newPartnerId);
-      isInitiatorRef.current = isInitiator;
+      isInitiatorRef.current = !!isInitiator;
       setMessages([]);
       setStatus("matched");
       setPartnerTyping(false);
@@ -79,9 +73,9 @@ export const SocketProvider = ({ children }) => {
       } catch (err) {
         console.error("Key generation failed:", err);
       }
-    });
+    };
 
-    socket.on("exchange_key", async ({ publicKey: partnerPublicKeyJwk }) => {
+    const onExchangeKey = async ({ publicKey: partnerPublicKeyJwk }) => {
       try {
         const partnerPublicKey = await importPublicKey(partnerPublicKeyJwk);
         if (keyPairRef.current) {
@@ -93,9 +87,9 @@ export const SocketProvider = ({ children }) => {
       } catch (err) {
         console.error("Key exchange failed:", err);
       }
-    });
+    };
 
-    socket.on("message", async ({ encryptedData, iv, from, timestamp }) => {
+    const onMessage = async ({ encryptedData, iv, from, timestamp }) => {
       try {
         let text = "[Encrypted message]";
         if (sharedKeyRef.current) {
@@ -112,13 +106,11 @@ export const SocketProvider = ({ children }) => {
           { id: Date.now(), text: "[Failed to decrypt]", sender: "partner", timestamp },
         ]);
       }
-    });
+    };
 
-    socket.on("typing", ({ isTyping }) => {
-      setPartnerTyping(isTyping);
-    });
+    const onTyping = ({ isTyping }) => setPartnerTyping(isTyping);
 
-    socket.on("partner_disconnected", () => {
+    const onPartnerDisconnected = () => {
       setStatus("disconnected");
       setPartnerTyping(false);
       setMediaActive(false);
@@ -128,45 +120,63 @@ export const SocketProvider = ({ children }) => {
         mediaControllerRef.current.stop();
         mediaControllerRef.current = null;
       }
-    });
+    };
 
-    socket.on("webrtc_offer", async ({ offer }) => {
+    const onWebrtcOffer = async ({ offer }) => {
       if (mediaControllerRef.current) {
         await mediaControllerRef.current.handleOffer(offer);
       }
-    });
+    };
 
-    socket.on("webrtc_answer", async ({ answer }) => {
+    const onWebrtcAnswer = async ({ answer }) => {
       if (mediaControllerRef.current) {
         await mediaControllerRef.current.handleAnswer(answer);
       }
-    });
+    };
 
-    socket.on("webrtc_ice_candidate", async ({ candidate }) => {
+    const onWebrtcIceCandidate = async ({ candidate }) => {
       if (mediaControllerRef.current) {
         await mediaControllerRef.current.handleIceCandidate(candidate);
       }
-    });
+    };
 
-    socket.on("media_state", ({ audioActive, videoActive }) => {
+    const onMediaState = ({ audioActive, videoActive }) => {
       if (audioActive !== undefined) setPartnerVoiceActive(audioActive);
       if (videoActive !== undefined) setPartnerCameraActive(videoActive);
-    });
+    };
+
+    socket.on("connect", onConnect);
+    socket.on("disconnect", onDisconnect);
+    socket.on("online_count", onOnlineCount);
+    socket.on("searching", onSearching);
+    socket.on("match_found", onMatchFound);
+    socket.on("exchange_key", onExchangeKey);
+    socket.on("message", onMessage);
+    socket.on("typing", onTyping);
+    socket.on("partner_disconnected", onPartnerDisconnected);
+    socket.on("webrtc_offer", onWebrtcOffer);
+    socket.on("webrtc_answer", onWebrtcAnswer);
+    socket.on("webrtc_ice_candidate", onWebrtcIceCandidate);
+    socket.on("media_state", onMediaState);
+
+    if (socket.connected) {
+      setIsConnected(true);
+    }
 
     return () => {
-      socket.off("connect");
-      socket.off("disconnect");
-      socket.off("searching");
-      socket.off("match_found");
-      socket.off("exchange_key");
-      socket.off("message");
-      socket.off("typing");
-      socket.off("partner_disconnected");
-      socket.off("webrtc_offer");
-      socket.off("webrtc_answer");
-      socket.off("webrtc_ice_candidate");
-      socket.off("media_state");
-      socket.off("online_count");
+      socket.off("connect", onConnect);
+      socket.off("disconnect", onDisconnect);
+      socket.off("online_count", onOnlineCount);
+      socket.off("searching", onSearching);
+      socket.off("match_found", onMatchFound);
+      socket.off("exchange_key", onExchangeKey);
+      socket.off("message", onMessage);
+      socket.off("typing", onTyping);
+      socket.off("partner_disconnected", onPartnerDisconnected);
+      socket.off("webrtc_offer", onWebrtcOffer);
+      socket.off("webrtc_answer", onWebrtcAnswer);
+      socket.off("webrtc_ice_candidate", onWebrtcIceCandidate);
+      socket.off("media_state", onMediaState);
     };
   }, []);
 

@@ -1,4 +1,4 @@
-import { useState, useContext } from "react";
+import { useState, useContext, useEffect } from "react";
 import { Header } from "../components/layout/Header";
 import { Button } from "../components/ui/Button";
 import { Tag } from "../components/ui/Tag";
@@ -21,6 +21,14 @@ export const Home = () => {
   const [partnerGender, setPartnerGender] = useState("any");
   const [mood, setMood] = useState("chill");
   const [selectedTags, setSelectedTags] = useState([]);
+
+  useEffect(() => {
+    if (status === "searching") {
+      navigate("/searching");
+    } else if (status === "matched") {
+      navigate("/chat");
+    }
+  }, [status, navigate]);
 
   const modes = [
     { key: "textChat", icon: "💬" },
@@ -62,7 +70,6 @@ export const Home = () => {
   const handleStartChat = () => {
     if (status !== "idle") return;
     findPartner({ mode, age, tags: selectedTags, myGender, partnerGender, mood });
-    navigate("/searching");
   };
 
   return (
